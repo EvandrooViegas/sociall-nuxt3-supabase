@@ -1,19 +1,23 @@
-<script setup lang="tsx">
-import getUser from '~~/lib/getUser';
-
+<script setup lang="ts">
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth"]
 })
-
 const supabase = useSupabaseAuthClient()
+const user = useSupabaseUser()
 
 async function continueWithGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
         provider: "google"
     })
-
 }
+onMounted(() => {
+    watchEffect(() => {
+        if(user.value) {
+            navigateTo("/")
+        }
+    })
+})
 
 </script>
 
@@ -26,6 +30,5 @@ async function continueWithGoogle() {
                 <Icon name="gg:google" />
             </span>
         </button>
-       
     </div>
 </template>

@@ -1,14 +1,26 @@
 <script setup lang="tsx">
-import getUser from '~~/lib/getUser';
 
+
+const user = useSupabaseUser()
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth"]
 })
-const supabase = useSupabaseClient()
+const supabase = useSupabaseAuthClient()
 async function logout() {
+    console.log("..login out")
     await supabase.auth.signOut()
-    if(!await getUser()) navigateTo("/auth")
+    console.log(user.value)
+    console.log("logged out!")
+
+
 }
+onMounted(() => {
+    watchEffect(() => {
+        if(!user.value) {
+            navigateTo("/auth")
+        }
+    })
+})
 
 </script>
 
