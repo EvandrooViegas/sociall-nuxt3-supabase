@@ -3,7 +3,7 @@ import getSupabase from '~~/lib/getSupabase';
 import getUser from '~~/lib/getUser';
 
 definePageMeta({
-    middleware: "auth"
+    middleware: ["auth"]
 })
 const supabase = await getSupabase()
 const postDescription = ref<string>("")
